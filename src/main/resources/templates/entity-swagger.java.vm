@@ -1,0 +1,33 @@
+package ${package}.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Data
+@Accessors(chain = true)
+@TableName("${tableName}")
+@Schema(name = "${entity}", description = "${entity} 实体")
+public class ${entity} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    #foreach($field in $fields)
+        /**
+         * ${field.comment}
+         */
+        #if($field.isPrimaryKey)
+        @TableId(value = "${field.columnName}", type = IdType.ASSIGN_ID)
+        #elseif($field.logicDelete)
+        @TableLogic
+        #elseif($field.isVersion)
+        @Version
+        #end
+    @Schema(description = "${field.comment}")
+    private ${field.type} ${field.propertyName};
+    #end
+}

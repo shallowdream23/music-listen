@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+    <resultMap id="BaseResultMap" type="${package.Entity}.${table.entityName}">
+        #foreach($field in $table.fields)
+            <result column="${field.columnName}" property="${field.propertyName}" />
+        #end
+    </resultMap>
+
+    <sql id="Base_Column_List">
+            #foreach($field in $table.fields)
+                ${field.columnName}#if($foreach.hasNext),#end
+            #end
+    </sql>
+
+</mapper>
