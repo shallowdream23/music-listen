@@ -47,6 +47,9 @@ public class PlayHistory implements Serializable {
     @TableField("create_time")
     private Long createTime;
 
+    @TableField("update_time")
+    private Long updateTime;
+
     @TableLogic(delval = "UNIX_TIMESTAMP()")
     @TableField("delete_time")
     private Long deleteTime;

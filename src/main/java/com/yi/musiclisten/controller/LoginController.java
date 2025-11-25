@@ -3,6 +3,7 @@ package com.yi.musiclisten.controller;
 import com.yi.musiclisten.entity.User;
 import com.yi.musiclisten.service.IUserService;
 import com.yi.musiclisten.utils.JWTUtils;
+import com.yi.musiclisten.utils.PasswordUtil;
 import com.yi.musiclisten.utils.Result;
 import com.yi.musiclisten.enums.ResponseEnum;
 import com.yi.musiclisten.vo.LoginVo;
@@ -29,6 +30,12 @@ public class LoginController {
         User userInfo = userService.getByUsername(login.getUsername());
         Result.checkParam(userInfo==null,"用户为空");
         Result.checkParam(userInfo.getStatus()==1,"用户已被冻结，请联系管理员");
+
+        //密码校验
+        boolean matches = PasswordUtil.matches(login.getPassword(), userInfo.getPassword());
+        Result.checkParam(!matches,"密码错误");
+
+        //生成token
         Map<String,Object> claims= new HashMap<>();
         claims.put("userId",userInfo.getId());
         String token = JWTUtils.generateToken(claims);
@@ -50,7 +57,7 @@ public class LoginController {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(PasswordUtil.encrypt(password));
         user.setIsSinger(0); // 默认角色
         userService.save(user);
 

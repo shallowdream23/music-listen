@@ -38,6 +38,8 @@ public class SongController {
     @GetMapping("/{id}")
     public Result getSong(@PathVariable Long id) {
         Song song = songService.getById(id);
+        song.setPlayCount(song.getPlayCount() + 1);
+        songService.updateById(song);
         return song != null ? Result.success(ResponseEnum.SUCCESS,song) : Result.fail(ResponseEnum.PARAM_IS_INVALID,"未找到该歌曲");
     }
 

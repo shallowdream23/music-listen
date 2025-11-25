@@ -44,6 +44,12 @@ public class User implements Serializable {
     private String password;
 
     /**
+     * 性别：1男 2女 0 未知
+     */
+    @TableField("sex")
+    private Integer sex;
+
+    /**
      * 头像
      */
     @TableField("avatar_url")

@@ -6,10 +6,7 @@ import com.yi.musiclisten.enums.ResponseEnum;
 import com.yi.musiclisten.service.IUserService;
 import com.yi.musiclisten.utils.Result;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -64,6 +61,27 @@ public class UserController {
                         .eq(User::getId, userId)
                         .set(User::getStatus, 0)
         );
+        return Result.success(ResponseEnum.SUCCESS);
+    }
+    /**
+     * 获取用户信息
+     * @param id 用户ID
+     * @return 用户信息
+     */
+    @PostMapping("/getUserInfo")
+    public Result getUserInfo(@RequestParam Long id) {
+        User user = userService.getById(id);
+        return Result.success(ResponseEnum.SUCCESS,user);
+    }
+
+    /**
+     * 修改用户信息
+     * @param user 用户信息
+     * @return 修改结果
+     */
+    @PostMapping("/updateUserInfo")
+    public Result updateUserInfo(@RequestBody User user) {
+        userService.updateById(user);
         return Result.success(ResponseEnum.SUCCESS);
     }
 

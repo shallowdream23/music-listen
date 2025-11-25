@@ -54,7 +54,7 @@ public class Playlist implements Serializable {
      * 歌单类型：1普通 2收藏歌单
      */
     @TableField("type")
-    private Byte type;
+    private Integer type;
 
     /**
      * 是否公开
