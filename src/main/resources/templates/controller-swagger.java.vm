@@ -1,0 +1,48 @@
+package ${package.Controller};
+
+import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+@Tag(name = "${table.comment}接口")
+@RestController
+@RequestMapping("/${table.entityPath}")
+@RequiredArgsConstructor
+public class ${table.controllerName} {
+
+private final ${table.serviceName} ${table.entityPath}Service;
+
+@Operation(summary = "获取${table.comment}列表")
+@GetMapping
+public Object list() {
+    return ${table.entityPath}Service.list();
+}
+
+@Operation(summary = "根据ID查询${table.comment}")
+@GetMapping("/{id}")
+public Object getById(@Parameter(description = "ID") @PathVariable Long id) {
+    return ${table.entityPath}Service.getById(id);
+}
+
+@Operation(summary = "新增${table.comment}")
+@PostMapping
+public Object save(@RequestBody ${entity} entity) {
+    return ${table.entityPath}Service.save(entity);
+}
+
+@Operation(summary = "修改${table.comment}")
+@PutMapping
+public Object update(@RequestBody ${entity} entity) {
+    return ${table.entityPath}Service.updateById(entity);
+}
+
+@Operation(summary = "删除${table.comment}")
+@DeleteMapping("/{id}")
+public Object delete(@Parameter(description = "ID") @PathVariable Long id) {
+    return ${table.entityPath}Service.removeById(id);
+}
+}
