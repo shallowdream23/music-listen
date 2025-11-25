@@ -66,7 +66,7 @@ public class Song implements Serializable {
      * 风格
      */
     @TableField("style")
-    private String style;
+    private Integer style;
 
     /**
      * 播放量

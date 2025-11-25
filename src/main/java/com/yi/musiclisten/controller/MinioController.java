@@ -35,8 +35,10 @@ public class MinioController {
 
     @Resource
     private MinioService minioService;
-     /**
+
+    /**
      * 上传歌曲
+     *
      * @param file 要上传的文件，通过@RequestParam接收前端传递的文件参数
      * @return 返回上传文件的临时访问URL
      * @throws Exception 文件上传或处理过程中可能抛出的异常

@@ -2,6 +2,9 @@ package com.yi.musiclisten.service;
 
 import com.yi.musiclisten.entity.Album;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yi.musiclisten.to.AlbumTo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-11-16
  */
 public interface IAlbumService extends IService<Album> {
+
+   List<AlbumTo> formatList (List<Album> list);
 
 }

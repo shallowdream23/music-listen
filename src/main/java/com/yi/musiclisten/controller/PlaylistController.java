@@ -25,11 +25,21 @@ public class PlaylistController {
 
     @Resource
     private IPlaylistService playlistService;
+
+    /**
+     * 获取用户播放列表
+     *
+     * @param id 用户ID
+     * @return 返回该用户的所有播放列表信息
+     */
     @GetMapping("/list")
     public Result list(@RequestParam("id") Long id) {
+        // 根据用户ID查询对应的播放列表
         List<Playlist> list = playlistService.list(new LambdaQueryWrapper<Playlist>()
                 .eq(Playlist::getUserId, id));
+        // 对播放列表进行格式化处理
         List<PlayListTo> formatlist = playlistService.formatlist(list);
-        return Result.success(ResponseEnum.SUCCESS,formatlist);
+        return Result.success(ResponseEnum.SUCCESS, formatlist);
     }
+
 }

@@ -4,6 +4,25 @@ server:
 spring:
   application:
     name: music-listen
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 1796340674@qq.com
+    password: hgaxrtaaxmdubcfb
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  data:
+    redis:
+      host: 192.168.128.130
+      port: 6379
+      database: 0
+      timeout: 3000
   servlet:
     multipart:
       max-file-size: 500MB

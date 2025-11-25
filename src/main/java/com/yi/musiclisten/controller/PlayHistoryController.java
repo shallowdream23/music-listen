@@ -27,8 +27,9 @@ public class PlayHistoryController {
     @Resource
     private IPlayHistoryService playHistoryService;
 
-        /**
+    /**
      * 根据用户ID获取播放历史列表
+     *
      * @param id 用户ID
      * @return 包含播放历史列表的统一响应结果
      */
@@ -36,11 +37,11 @@ public class PlayHistoryController {
     public Result list(@RequestParam Long id) {
         // 根据用户ID查询播放历史记录
         List<PlayHistory> playHistories = playHistoryService.listByUserId(id);
-        return Result.success(ResponseEnum.SUCCESS,playHistories);
+        return Result.success(ResponseEnum.SUCCESS, playHistories);
     }
 
 
-        /**
+    /**
      * 添加播放历史记录
      *
      * @param vo 播放历史信息对象，包含用户ID和歌曲ID
@@ -73,7 +74,6 @@ public class PlayHistoryController {
         return save ? Result.success(ResponseEnum.SUCCESS, "添加成功")
                 : Result.fail(ResponseEnum.FAIL, "添加失败");
     }
-
 
 
 }

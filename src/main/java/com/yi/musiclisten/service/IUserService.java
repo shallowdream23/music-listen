@@ -2,6 +2,9 @@ package com.yi.musiclisten.service;
 
 import com.yi.musiclisten.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yi.musiclisten.to.UserTo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +17,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IUserService extends IService<User> {
 
     User getByUsername(String username);
+
+    List<UserTo> fomrmatList(List<User> list);
+
+    UserTo fomrmatone(User user);
 }
