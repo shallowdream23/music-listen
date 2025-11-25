@@ -63,6 +63,12 @@ public class Song implements Serializable {
     private String coverUrl;
 
     /**
+     * 风格
+     */
+    @TableField("style")
+    private String style;
+
+    /**
      * 播放量
      */
     @TableField("play_count")
