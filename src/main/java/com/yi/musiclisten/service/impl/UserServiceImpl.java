@@ -8,6 +8,11 @@ import com.yi.musiclisten.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yi.musiclisten.to.UserTo;
 import com.yi.musiclisten.utils.EntityUtil;
+import com.yi.musiclisten.utils.PasswordUtil;
+import com.yi.musiclisten.utils.Result;
+import com.yi.musiclisten.vo.PasswordUpdateVo;
+import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +28,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public User getByUsername(String username) {
@@ -44,5 +52,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         UserTo userTo = new UserTo();
         EntityUtil.copyProperties(user, userTo, true);
         return userTo;
+    }
+
+    @Override
+    public void changePassword(PasswordUpdateVo vo) {
+        User one = this.getById(vo.getUserId());
+        Result.checkParam(!PasswordUtil.matches(vo.getOldPassword(), one.getPassword()), "旧密码错误");
+        one.setPassword(PasswordUtil.encrypt(vo.getNewPassword()));
+
+        // 读取 Redis 中的验证码
+        String redisKey = "email:code:" + one.getEmail();
+        String redisCode = (String) redisTemplate.opsForValue().get(redisKey);
+        Result.checkParam(redisCode == null, "验证码已失效");
+        Result.checkParam(!redisCode.equals(vo.getCode()), "验证码错误");
+        this.updateById(one);
+        redisTemplate.delete(redisKey);
     }
 }

@@ -36,33 +36,44 @@ public class MinioServiceImpl implements MinioService {
     @Resource
     private MinioClient minioClient;
 
+    /** 状态：待审核 */
+    private static final int SONG_STATUS_PENDING = 0;
+    /** 状态：已上架 */
+    private static final int SONG_STATUS_APPROVED = 1;
+
     @Override
-    public void uploadSong(MultipartFile file, UploadSongRequestDto songDto) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void uploadSong(MultipartFile file, UploadSongRequestDto songDto, Long currentUserId) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
-        //生成 MinIO objectName
         String objectName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-        //查询或创建歌手
-        String singerName = songDto.getSingerName();
-        Result.checkParam(singerName == null || singerName.trim().isEmpty(), "歌手名不能为空");
-
-        User singer = userService.getByUsername(singerName.trim());
-        if (singer == null) {
-            singer = new User()
-                    .setUsername(singerName.trim())   // 确保 username 不为空
-                    .setIsSinger(1)
-                    .setPassword("000000");
-            userService.save(singer);
+        Long singerId;
+        if (currentUserId != null) {
+            User singer = userService.getById(currentUserId);
+            Result.checkParam(singer == null, "用户不存在");
+            if (singer.getIsSinger() == null || singer.getIsSinger() == 0) {
+                singer.setIsSinger(1);
+                userService.updateById(singer);
+            }
+            singerId = currentUserId;
+        } else {
+            String singerName = songDto.getSingerName();
+            Result.checkParam(singerName == null || singerName.trim().isEmpty(), "歌手名不能为空");
+            User singer = userService.getByUsername(singerName.trim());
+            if (singer == null) {
+                singer = new User()
+                        .setUsername(singerName.trim())
+                        .setIsSinger(1)
+                        .setPassword("000000");
+                userService.save(singer);
+            }
+            singerId = singer.getId();
         }
-        Long singerId = singer.getId();
 
-        //查询或创建专辑）
         Album album = null;
         String albumName = songDto.getAlbumName();
-        if (albumName != null) {
+        if (albumName != null && !albumName.trim().isEmpty()) {
             album = albumService.getOne(new LambdaQueryWrapper<Album>()
-                    .eq(Album::getTitle, albumName.trim())
-            );
+                    .eq(Album::getSingerId, singerId)
+                    .eq(Album::getTitle, albumName.trim()));
             if (album == null) {
                 album = new Album()
                         .setTitle(albumName.trim())
@@ -73,16 +84,24 @@ public class MinioServiceImpl implements MinioService {
         }
         Long albumId = album != null ? album.getId() : null;
 
-        //生成永久 URL（public 桶直接拼接）
         String permanentUrl = "http://127.0.0.1:9000/music/" + objectName;
+        String title = (songDto.getTitle() != null && !songDto.getTitle().trim().isEmpty())
+                ? songDto.getTitle().trim() : file.getOriginalFilename();
 
-        //保存歌曲
         Song song = new Song();
-        song.setTitle(file.getOriginalFilename());
+        song.setTitle(title);
         song.setAudioUrl(permanentUrl);
         song.setSingerId(singerId);
         song.setAlbumId(albumId);
         song.setCreateTime(System.currentTimeMillis());
+        song.setStatus(SONG_STATUS_PENDING);
+        song.setStyle(songDto.getStyle() != null ? songDto.getStyle() : 0);
+        if (songDto.getLyric() != null && !songDto.getLyric().trim().isEmpty()) {
+            song.setLyric(songDto.getLyric().trim());
+        }
+        if (songDto.getCoverUrl() != null && !songDto.getCoverUrl().trim().isEmpty()) {
+            song.setCoverUrl(songDto.getCoverUrl().trim());
+        }
 
         songService.save(song);
 

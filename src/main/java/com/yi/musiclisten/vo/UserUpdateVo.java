@@ -24,4 +24,9 @@ public class UserUpdateVo {
      */
     private String profile;
 
+    /**
+     * 默认下载路径
+     */
+    private String downloadPath;
+
 }

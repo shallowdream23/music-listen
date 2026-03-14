@@ -17,6 +17,15 @@ public class UploadSongRequestDto {
     @Schema(description = "风格ID数组")
     private List<Long> styleIds;
 
+    @Schema(description = "风格ID（单值，与 styleIds 二选一）")
+    private Integer style;
+
+    @Schema(description = "歌曲名称（可选，不填则用文件名）")
+    private String title;
+
+    @Schema(description = "封面图片 URL（可选，由前端先上传图片获得）")
+    private String coverUrl;
+
     @Schema(description = "歌词")
     private String lyric;
 

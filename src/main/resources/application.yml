@@ -8,7 +8,7 @@ spring:
     host: smtp.qq.com
     port: 587
     username: 1796340674@qq.com
-    password:
+    password: hgaxrtaaxmdubcfb
     protocol: smtp
     properties:
       mail:
@@ -66,6 +66,10 @@ minio:
   secret-key: minioadmin
   bucket: music
   secure: false
+
+# 管理员账号（多个用英文逗号分隔），用于后台管理入口
+app:
+  admin-usernames: admin
 
 
 

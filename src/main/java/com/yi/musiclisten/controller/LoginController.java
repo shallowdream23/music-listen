@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
 public class LoginController {
 
     @Autowired
@@ -50,11 +49,11 @@ public class LoginController {
         Map<String,Object> claims= new HashMap<>();
         claims.put("userId",userInfo.getId());
         String token = JWTUtils.generateToken(claims);
-        response.setHeader("Authorization",token);
+        response.setHeader("token",token);
         return Result.success(ResponseEnum.SUCCESS,token);
     }
 
-    @PostMapping("/sendEmailCode")
+    @GetMapping("/sendEmailCode")
     public Result sendEmailCode(@RequestParam String email) {
 
         // 生成验证码
@@ -90,6 +89,7 @@ public class LoginController {
         User user = new User();
         user.setUsername(register.getUsername());
         user.setPassword(PasswordUtil.encrypt(register.getPassword()));
+        user.setEmail(register.getEmail());
         user.setIsSinger(0); // 默认角色
         userService.save(user);
 
@@ -101,8 +101,8 @@ public class LoginController {
      */
     @GetMapping("/logout")
     public Result<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        request.removeAttribute("Authorization");
-        response.setHeader("Authorization", "");
+        request.removeAttribute("token");
+        response.setHeader("token", "");
         return Result.success(ResponseEnum.SUCCESS, "退出成功");
     }
 }

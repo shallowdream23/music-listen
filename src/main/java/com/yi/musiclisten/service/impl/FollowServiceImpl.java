@@ -22,8 +22,10 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
     @Override
     public followTabCountTo tabCount(Long id) {
         followTabCountTo to = new followTabCountTo();
-        to.setFansCount(this.count(new LambdaQueryWrapper<Follow>()
+        // 关注数：该用户关注了多少人（follower_id = id）
+        to.setFollowCount(this.count(new LambdaQueryWrapper<Follow>()
                 .eq(Follow::getFollowerId, id)));
+        // 粉丝数：有多少人关注了该用户（followee_id = id）
         to.setFansCount(this.count(new LambdaQueryWrapper<Follow>()
                 .eq(Follow::getFolloweeId, id)));
         return to;

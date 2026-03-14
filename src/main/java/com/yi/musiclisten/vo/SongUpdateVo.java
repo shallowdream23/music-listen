@@ -25,4 +25,14 @@ public class SongUpdateVo {
      * 风格
      */
     private Integer style;
+
+    /**
+     * 歌词（LRC 格式）
+     */
+    private String lyric;
+
+    /**
+     * 上架状态：0 待审核 1 已上架
+     */
+    private Integer status;
 }

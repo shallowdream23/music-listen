@@ -3,6 +3,7 @@ package com.yi.musiclisten.service;
 import com.yi.musiclisten.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yi.musiclisten.to.UserTo;
+import com.yi.musiclisten.vo.PasswordUpdateVo;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface IUserService extends IService<User> {
     List<UserTo> fomrmatList(List<User> list);
 
     UserTo fomrmatone(User user);
+
+    void changePassword(PasswordUpdateVo vo);
 }

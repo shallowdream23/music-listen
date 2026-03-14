@@ -50,6 +50,12 @@ public class User implements Serializable {
     private Integer sex;
 
     /**
+     * 邮箱地址
+     */
+    @TableField("email")
+    private String email;
+
+    /**
      * 头像
      */
     @TableField("avatar_url")
@@ -60,6 +66,12 @@ public class User implements Serializable {
      */
     @TableField("profile")
     private String profile;
+
+    /**
+     * 默认下载路径（桌面端生效；网页端使用浏览器默认下载位置）
+     */
+    @TableField("download_path")
+    private String downloadPath;
 
     /**
      * 是否歌手：0否 1是

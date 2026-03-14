@@ -53,6 +53,10 @@ public class Album implements Serializable {
     @TableField("description")
     private String description;
 
+    /** 审核状态：0 待审核 1 已通过 */
+    @TableField("status")
+    private Integer status;
+
     @TableField("create_time")
     private Long createTime;
 

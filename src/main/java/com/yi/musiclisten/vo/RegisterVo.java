@@ -7,5 +7,5 @@ public class RegisterVo {
     private String username;
     private String password;
     private String email;
-    private Integer code;
+    private String code;
 }

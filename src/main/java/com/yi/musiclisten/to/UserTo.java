@@ -30,7 +30,22 @@ public class UserTo {
     private String profile;
 
     /**
+     * 默认下载路径
+     */
+    private String downloadPath;
+
+    /**
      * 是否歌手：0否 1是
      */
     private Integer isSinger;
+
+    /**
+     * 状态：0 正常 1 冻结（管理端列表使用）
+     */
+    private Integer status;
+
+    /**
+     * 是否管理员（仅 getUserInfo 时返回，用于后台入口）
+     */
+    private Boolean isAdmin;
 }

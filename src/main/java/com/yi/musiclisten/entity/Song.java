@@ -63,6 +63,12 @@ public class Song implements Serializable {
     private String coverUrl;
 
     /**
+     * 歌词（LRC 格式文本）
+     */
+    @TableField("lyric")
+    private String lyric;
+
+    /**
      * 风格
      */
     @TableField("style")
@@ -73,6 +79,12 @@ public class Song implements Serializable {
      */
     @TableField("play_count")
     private Long playCount;
+
+    /**
+     * 上架状态：0 待审核 1 已上架
+     */
+    @TableField("status")
+    private Integer status;
 
     @TableField("create_time")
     private Long createTime;
@@ -97,6 +109,8 @@ public class Song implements Serializable {
     public static final String COVER_URL = "cover_url";
 
     public static final String PLAY_COUNT = "play_count";
+
+    public static final String STATUS = "status";
 
     public static final String CREATE_TIME = "create_time";
 
